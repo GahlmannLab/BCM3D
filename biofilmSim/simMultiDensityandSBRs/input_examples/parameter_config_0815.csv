@@ -1,0 +1,4 @@
+cellmodeller_7frame,0.96,500,LLSM,membrane,parameter_eachcell,1
+cellmodeller_7frame,0.96,12000,LLSM,membrane,parameter_eachcell,1
+cellmodeller_7frame,0.96,500,LLSM,wholeexp,parameter_eachcell,1
+cellmodeller_7frame,0.96,12000,LLSM,wholeexp,parameter_eachcell,1
