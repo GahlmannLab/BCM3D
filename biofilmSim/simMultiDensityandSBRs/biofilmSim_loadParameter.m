@@ -29,7 +29,7 @@ filePath = pwd;
 % keep the names of the matfiles the same
 prompt = {'Enter your PSF (561psf or 488psf)', 'number of emitters (default:(myxo:n = 2000, ecoli:n = 500))'};
 dlgtitle = 'Chosen PSF and emitters';
-definput = {'561psf', '2000'};
+definput = {'488psf', '500'};
 opts.Interpreter = 'tex';
 answer = inputdlg(prompt,dlgtitle,[1 80],definput,opts);
 psf_chosen = answer{1}; number_of_emitters = str2double(answer{2});

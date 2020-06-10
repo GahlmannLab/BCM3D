@@ -1,11 +1,8 @@
-#### CellModeller data processing
+#### CellModeller data generation and processing
 
-See detailed biofilm simulation in cellModeller https://haselofflab.github.io/CellModeller/.
-load_pickle.ipynb takes the saved pickle data from cellModeller and saves both the cell positions and orientations in two separate csv files. The example pickle data is shown in <u>Examples</u>.
+CellModeller is a Python-based framework for modelling large-scale multi-cellular systems that was developed by the Haseloff lab.
 
-parameters_simulation_v2 takes two csv files 'cell_parameters.csv' and 'orientation.csv'.
-cell_orientation gives the angles to x,y,z axis of each cell.
+We have only tested CellModeller on Mac Mojave. For more details and installation instructions of CellModeller, see the official website https://haselofflab.github.io/CellModeller/. An example python script to use CellModeller is shown in <u>Examples</u>. CellModeller saves pickled biofilm cell arrangement data, and we used **load_pickle.ipynb** to save both the cell positions and orientations in two separate csv files. 
 
-The first row of the cell_parameter is cell ID;second is cell length l; the third, forth and fifth are the x,y,z position of the center of mass.  The radius r, which is the radius of the spherical cylinder is either hard coded to be 400 nanometers or random numbers between biological reasonable range.
+**parameters_simulation_v2** combines two csv files, 'cell_parameters.csv' and 'orientation.csv', to a .mat file, 'cell_parameter_eachframe.mat' for downstream biofilm simulations. The file contains cell radius, length, positions and orientations. (example .csv files are in ./csvFiles/ecoli_csv)
 
-The unit is in nanometer.

@@ -1,8 +1,6 @@
 %% Generate simulated 3D fluorscence stack of mixed shape biofilms 
 %  based on CellModeller simulation
  
-%% Loading experimental PSF (Point Spred Function)
-[psf_rot, psf_decon_rot, background_1] = LoadPSF();
 
 %% Creating biofilm volume
 rng(10);
@@ -15,24 +13,24 @@ ground_label = {ground_rod_label, ground_sphere_label};
 
 %% Simulate noise and background
 vari = 3.03; %Gaussian-distributed camera read-out noise
-noise = poissrnd(background_1,size(mix_data)) + normrnd(zeros(size(mix_data)),vari);
+noise = poissrnd(background,size(mix_data)) + normrnd(zeros(size(mix_data)),vari);
 % Sum possion noise and gaussina noise
 
 %% Convolve data with PSF
 type_name = {'rod', 'sphere'};
 for n =1:length(select_points)
-model_data = convn(select_points{n},psf_rot,'same');%convolution simulate model with psf
+model_data = convn(select_points{n},psf_conv,'same');%convolution simulate model with psf
 
 %% Calculate initial SBR
 if n==1 && rod_num>0 %Rod shaped cell
 SignalPerCell=sum(model_data(:))/rod_num;
-SBR_initial = SignalPerCell/background_1; %Signal per cell/background
+SBR_initial = SignalPerCell/background; %Signal per cell/background
 model_data_temp = model_data.*((SBR-1)/(SBR_initial-1)); % Change signal level to setting SBR  
 datafolder = datafolder3;% datafolder3 is for rod shaped cells
 
 elseif n==2 && sphere_num > 0% Sphere shaped cell
 SignalPerCell=sum(model_data(:))/sphere_num;
-SBR_initial = SignalPerCell/background_1; %signal per cell/background 
+SBR_initial = SignalPerCell/background; %signal per cell/background 
 SBR = 0.4*SBR; % Reduce signal of sphere shaped cell otherwise it will be much brighter than rod shaped cells (due to the different cell volume)
 model_data_temp = model_data.*((SBR-1)/(SBR_initial-1)); % Change intensity to setting SBR
 datafolder =datafolder4;%datafolder4 is for sphere shaped cells
@@ -53,9 +51,9 @@ mix_data = mix_data+noise;
 write3Dtiff_V2(uint16(mix_data),strcat(datafolder1,prefix,str1 ,'_raw.tif')) 
 % Output and save raw data
 %% Deconv mix data
-rawdata = single(mix_data)-background_1;
+rawdata = single(mix_data)-background;
 rawdata(rawdata<0)=0;
 nIter=10;
-deconvolved = deconvlucy(rawdata, psf_decon_rot, nIter) * numel(rawdata);
+deconvolved = deconvlucy(rawdata, psf_decon, nIter) * numel(rawdata);
 niftiwrite_v2(uint16(deconvolved),strcat(datafolder2,prefix,str1 ,'_deconv_T1.nii')); 
 % Output and save deconv data

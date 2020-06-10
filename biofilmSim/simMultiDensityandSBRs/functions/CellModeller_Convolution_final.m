@@ -39,7 +39,7 @@ classdef CellModeller_Convolution_final
         function Cellmodeller_convolutionV4 (obj, psf, n)
             %% Load parameter and catagorize
             % loading experimental psf
-            [psf_rot, psf_decon_rot, background_1] = LoadPSF_select(psf);
+            [psf_conv, psf_decon, background] = LoadPSF_select(psf);
             %creating biofilm volume
             %CellModeller_data = parameter_eachcell{1,obj.n_of_replicate};
             rng(10);
@@ -50,7 +50,7 @@ classdef CellModeller_Convolution_final
                 whole_select_points,ground_label]=cellVolume_cellmodeller(obj.CellModeller_data,...
                 voxelSize,simbox,obj.Distance_ratio,n);
             % output membrane and cytosolic points
-            if strcmp(obj.stain,'wholeexp') == 1
+            if strcmp(obj.stain,'cytosol') == 1
                 select_points = whole_select_points;
 
             elseif strcmp(obj.stain,'membrane') == 1
@@ -63,31 +63,31 @@ classdef CellModeller_Convolution_final
             number = num2str(obj.n_of_replicate);
 
             %% convolution
-            model_data = convn(select_points,psf_rot,'same');%convolution simulate model with psf
+            model_data = convn(select_points,psf_conv,'same');%convolution simulate model with psf
 
             % simulate noise and background
             vari = 3.04;% Gaussian-distributed camera read-out noise
-            noise = poissrnd(background_1,size(model_data)) + normrnd(zeros(size(model_data)),vari);
+            noise = poissrnd(background,size(model_data)) + normrnd(zeros(size(model_data)),vari);
             % Sum possion noise and gaussina noise
             %% add noise and set SBR
             str8 = num2str(obj.SBR);
             SignalPerCell=sum(model_data(:))/numCells;
-            SBR_initial = SignalPerCell/background_1; %photons per cell/phonon per voxel
+            SBR_initial = SignalPerCell/background; %photons per cell/phonon per voxel
             model_data_temp = model_data.*(( obj.SBR-1)/(SBR_initial-1)); % change signal level to setting SBR
             output_data = model_data_temp + noise;
             %% deconvolve
-            rawdata = single(output_data)-background_1;%%
+            rawdata = single(output_data)-background;%%
             rawdata(rawdata<0) = 0;% ensure signal is larger than 0
             nIter=10;
             rawdata_size=size(rawdata);
-            psf_decon_rot_size=size(psf_decon_rot);
+            psf_decon_rot_size=size(psf_decon);
 
             if psf_decon_rot_size > rawdata_size
                 %need pad in z direction for further deconv
                 rawdata(:,:,rawdata_size(3)+1:psf_decon_rot_size(3))=0;
             end
 
-            deconvolved = deconvlucy(rawdata, psf_decon_rot, nIter) * numel(rawdata);% decovolution here, after deconv, intensity is very low (not sure why), so multiply a large number to enhance intensity
+            deconvolved = deconvlucy(rawdata, psf_decon, nIter) * numel(rawdata);% decovolution here, after deconv, intensity is very low (not sure why), so multiply a large number to enhance intensity
             deconvolved = deconvolved(:,:,1:rawdata_size(3));
             %% output data name
             %str2 = '_cells_without_noise_background';

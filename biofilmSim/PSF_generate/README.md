@@ -1,0 +1,3 @@
+**LoadPSF was designed specifically for processing experimental PSF of our home-build lattice light sheet microscope.**
+
+It will read two experimentally obtained PSFs (e.g. 488psf, 488psf_decon) and process them properly to match voxel size and axial direction of simulated fluorescence images. Output will be stored in 'PSF.mat'. 'PSF.mat' includes 3 variables, 'psf_conv' (PSF used to convolve simulated emitter to get fluorescence images ), 'psf_decon' (PSF used to deconv fluorescence images), 'background'(background signal estimate from experimental psf).

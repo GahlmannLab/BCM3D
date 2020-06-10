@@ -1,15 +1,1 @@
-#### **Simulate 3D biofilm images and corresponding GTs.**
-
-The master script is biofilmSim_loadParameter.m .
-
-*inputs:*
-
-It reads csv parameter from configuration file."parameter_config.csv".
-
-It uses a main class and class function: CellModeller_Convolution_final.m.
-
-Choose experimentally measured LLSM PSF between 561psf and 488psf, both raw images and deconvolved images. 
-
-*outputs:*
-It saves membrane labeled cells biofilm as 'membrane'  .tif ground truth and .nii simulated fluorescence images into ./result/<u>date</u>/membrane and its subfolders; 
-It saves cytosolic labeled cells biofilm as 'wholeexp' labeled tif ground truth and nii simulated  fluorescence images into ./result/<u>date</u>/wholeexp and its subfolders.
+#### **Simulate 3D biofilm images and corresponding GTs.**The master script is biofilmSim_loadParameter.m .*inputs:*It reads csv parameter from configuration file."parameter_config.csv".It uses a main class and class function: CellModeller_Convolution_final.m.Choose experimentally measured LLSM PSF between 561psf and 488psf, both raw images and deconvolved images. *outputs:*It saves membrane labeled cells biofilm as 'membrane'  .tif ground truth and .nii simulated fluorescence images into ./result/<u>date</u>/membrane and its subfolders; It saves cytosolic labeled cells biofilm as 'wholeexp' labeled tif ground truth and nii simulated  fluorescence images into ./result/<u>date</u>/wholeexp and its subfolders.
